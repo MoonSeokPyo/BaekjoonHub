@@ -2,31 +2,26 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
-
-        // 분위별 장학금
-        int[] M = new int[11];
-        st = new StringTokenizer(br.readLine());
-        for (int i = 0; i <= 10; i++) {
-            M[i] = Integer.parseInt(st.nextToken());
-        }
-
-        int N = Integer.parseInt(br.readLine());
-        long sum = 0;
-
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            int B = Integer.parseInt(st.nextToken());   // 분위
-            double L = Double.parseDouble(st.nextToken()); // 평점 (중요!!)
-            int S = Integer.parseInt(st.nextToken());   // 학점
-
-            if (S >= 17 && L >= 2.0) {
-                sum += M[B];
-            }
-        }
-
-        System.out.println(sum);
-    }
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	public static void main(String[] args) throws Exception{
+		func_34552();
+		
+		br.close();
+		bw.close();
+	}
+    static void func_34552() throws Exception {
+		int[] arr = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+		int n = Integer.parseInt(br.readLine());
+		int cnt = 0;
+		for (int i = 0; i < n; i++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int b = Integer.parseInt(st.nextToken());
+			double l = Double.valueOf(st.nextToken());
+			int s = Integer.parseInt(st.nextToken());
+			if (s >= 17 && l >= 2.0)
+				cnt += arr[b];
+		}
+		bw.write(cnt + "");
+	}
 }
