@@ -47,34 +47,42 @@ public class Main {
 			}
 		}
 		
-		bw.write(func_15686_solve(house, chicken, new boolean[chickenCnt], 0, m) + "");
+		Context_15686 ct = new Context_15686();
+		ct.chicken = chicken; ct.house = house;
+		func_15686_solve(ct, new boolean[chickenCnt], 0, m);
+		bw.write(ct.result + "");
 	}
-    static int func_15686_solve(int[][]house, int[][] chicken, boolean[] visited, int depth, int cnt) {
+    static class Context_15686{
+		int result = Integer.MAX_VALUE;
+		int[][] house;
+		int[][] chicken;
+	}
+	static void func_15686_solve(Context_15686 ct, boolean[] visited, int depth, int cnt) {
 		if (depth == visited.length) {
 			if (cnt == 0) {
 				int result = 0;
-				for (int i = 0; i < house.length; i++) {
+				for (int i = 0; i < ct.house.length; i++) {
 					int min = Integer.MAX_VALUE;
-					for (int j = 0; j < chicken.length; j++) {
+					for (int j = 0; j < ct.chicken.length; j++) {
 						if (visited[j]) {
-							int height = Math.abs(house[i][0] - chicken[j][0]);
-							int width = Math.abs(house[i][1] - chicken[j][1]);
+							int height = Math.abs(ct.house[i][0] - ct.chicken[j][0]);
+							int width = Math.abs(ct.house[i][1] - ct.chicken[j][1]);
 							min = Math.min(min, height + width);
 						}
 					}
 					result += min;
+					if (result >= ct.result)
+						return;
 				}
-				return result;
-			} else
-				return Integer.MAX_VALUE;
+				ct.result = result;
+			}
+			return;
 		}
-		int min = Integer.MAX_VALUE;
 		if (cnt > 0) {
 			visited[depth] = true;
-			min = Math.min(min, func_15686_solve(house, chicken, visited, depth + 1, cnt - 1));
+			func_15686_solve(ct, visited, depth + 1, cnt - 1);
 		}
 		visited[depth] = false;
-		min = Math.min(min, func_15686_solve(house, chicken, visited, depth + 1, cnt));
-		return min;
+		func_15686_solve(ct, visited, depth + 1, cnt);
 	}
 }
