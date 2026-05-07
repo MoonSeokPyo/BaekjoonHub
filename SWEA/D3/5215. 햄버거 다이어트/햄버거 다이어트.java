@@ -13,36 +13,29 @@ class Solution {
 	}
 	
 	static void func_5215() throws Exception {
-		StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 		int testcase = Integer.parseInt(br.readLine());
 		for (int i = 1; i <= testcase; i++) {
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			int n = Integer.parseInt(st.nextToken());
 			int l = Integer.parseInt(st.nextToken());
-			int[] score = new int[n];
-			int[] kcal = new int[n];
-			for (int j = 0; j < n; j++) {
+			int[] dp = new int[l + 1];
+			int[] score = new int[n + 1];
+			int[] kcal = new int[n + 1];
+			for (int j = 1; j <= n; j++) {
 				st = new StringTokenizer(br.readLine());
 				int t = Integer.parseInt(st.nextToken());
 				int k = Integer.parseInt(st.nextToken());
 				score[j] = t;
 				kcal[j] = k;
 			}
-			sb.append('#').append(i).append(' ').append(func_5215_solve(l, score, kcal, 0, 0, 0)).append('\n');
+			for (int j = 1; j <= n; j++) {
+				for (int k = l; k - kcal[j] >= 0; k--) {
+					dp[k] = Math.max(dp[k], dp[k - kcal[j]] + score[j]);
+				}
+			}
+			sb.append('#').append(i).append(' ').append(dp[l]).append('\n');
 		}
 		bw.write(sb.toString());
-	}
-	static int func_5215_solve(int l, int[] score, int[] kcal, int depth, int sCnt, int kCnt) {
-		if (depth == score.length) {
-			return sCnt;
-		}
-		int max = Integer.MIN_VALUE;
-		
-		if (kCnt + kcal[depth] <= l)
-			max = Math.max(max, func_5215_solve(l, score, kcal, depth + 1, sCnt + score[depth], kCnt + kcal[depth]));
-		
-		max = Math.max(max, func_5215_solve(l, score, kcal, depth + 1, sCnt, kCnt));
-		
-		return max;
 	}
 }
