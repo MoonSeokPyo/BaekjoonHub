@@ -18,8 +18,8 @@ class Solution {
 		int[] dy = {-1, 1, 0, 0};
 		int[] dx = {0, 0, -1, 1};
 		for (int tc = 1; tc <= 10; tc++) {
-			tc = Integer.parseInt(br.readLine());
-			int[] start = new int[2], target = new int[2];
+			int testcase = Integer.parseInt(br.readLine());
+			int[] start = new int[2];
 			for (int i = 0; i < 100; i++) {
 				String input = br.readLine();
 				for (int j = 0; j < 100; j++) {
@@ -27,10 +27,6 @@ class Solution {
 					if (board[i][j] == 2) {
 						start[0] = i;
 						start[1] = j;
-					}
-					if (board[i][j] == 3) {
-						target[0] = i;
-						target[1] = j;
 					}
 				}
 			}
@@ -43,7 +39,7 @@ class Solution {
 				int[] cur = q.poll();
 				int y = cur[0];
 				int x = cur[1];
-				if (y == target[0] && x == target[1]) {
+				if (board[y][x] == 3) {
 					result = 1;
 					break;
 				}
