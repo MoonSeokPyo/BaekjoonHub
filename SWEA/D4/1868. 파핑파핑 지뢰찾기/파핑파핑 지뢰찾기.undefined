@@ -1,0 +1,88 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+	public static void main (String[] args) throws Exception {
+		func_1868();
+		
+		br.close();
+		bw.close();
+	}
+	
+	static void func_1868() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		Context_1868 ct = new Context_1868();
+		int T = Integer.parseInt(br.readLine());
+		for (int tc = 1; tc <= T; tc++) {
+			int N = Integer.parseInt(br.readLine());	ct.N = N;
+			char[][] board = new char[N][N];			ct.board = board;
+			for (int i = 0; i < N; i++) {
+				String input = br.readLine();
+				for (int j = 0; j < N; j++) {
+					board[i][j] = input.charAt(j);
+				}
+			}
+			int cnt = 0;
+			// 0
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					if (board[i][j] != '.')
+						continue;
+					int click = func_1868_click(ct, i, j);
+					if (click == 0) {
+						cnt++;
+						board[i][j] = Character.forDigit(click, 10);
+						func_1868_find(ct, i, j);
+					}
+				}
+			}
+			// * >= 1
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					if (board[i][j] == '.') {
+						cnt++;
+					}
+				}
+			}
+			
+			sb.append('#').append(tc).append(' ').append(cnt).append('\n');
+		}
+		bw.write(sb.toString());
+	}
+	static void func_1868_find(Context_1868 ct, int y, int x) {
+		int[] dy = ct.dy, dx = ct.dx;
+		int N = ct.N;	char[][] board = ct.board;
+		for (int i = 0; i < 8; i++) {
+			int ny = y + dy[i];
+			int nx = x + dx[i];
+			if (ny >= 0 && ny < N && nx >= 0 && nx < N && board[ny][nx] == '.') {
+				 int click = func_1868_click(ct, ny, nx);
+				 board[ny][nx] = Character.forDigit(click, 10);
+				 if (click == 0)
+					 func_1868_find(ct, ny, nx);
+			}
+		}
+	}
+	static int func_1868_click(Context_1868 ct, int y, int x) {
+		int[] dy = ct.dy, dx = ct.dx;
+		int N = ct.N;	char[][] board = ct.board;
+		int cnt = 0;
+		if (board[y][x] == '*')
+			return -1;
+		for (int i = 0; i < 8; i++) {
+			int ny = y + dy[i];
+			int nx = x + dx[i];
+			if (ny >= 0 && ny < N && nx >= 0 && nx < N && board[ny][nx] == '*')
+				cnt++;
+		}
+		return cnt;
+	}
+	static class Context_1868{
+		int[] dy = {-1, -1, -1, 0, 0, 1, 1, 1};
+		int[] dx = {-1, 0, 1, -1, 1, -1, 0, 1};
+		int N;
+		char[][] board;
+	}
+}
