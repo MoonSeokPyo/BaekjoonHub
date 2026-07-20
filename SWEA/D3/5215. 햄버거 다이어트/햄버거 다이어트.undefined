@@ -1,0 +1,58 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+	public static void main(String[] args) throws Exception {
+		func_5215_re();
+		
+		br.close();
+		bw.close();
+	}
+	
+	// 햄버거 다이어트
+	static void func_5215_re() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		int T = Integer.parseInt(br.readLine());
+		for (int tc = 1; tc <= T; tc++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int N = Integer.parseInt(st.nextToken());
+			int L = Integer.parseInt(st.nextToken());
+			
+			int[] t = new int[N], k = new int[N];
+			for (int i = 0; i < N; i++) {
+				st = new StringTokenizer(br.readLine());
+				t[i] = Integer.parseInt(st.nextToken());
+				k[i] = Integer.parseInt(st.nextToken());
+			}
+			
+			// dfs
+//			int max = func_5215_dfs(N, L, t, k, 0, 0, 0);
+			// dp
+			int[] dp = new int[L + 1];
+			for (int i = 0; i < N; i++) {
+				for (int j = L; j >= k[i]; j--) {
+					dp[j] = Math.max(dp[j], dp[j - k[i]] + t[i]);
+				}
+			}
+			
+			sb.append('#').append(tc).append(' ').append(dp[L]).append('\n');
+		}
+		bw.write(sb.toString());
+	}
+	static int func_5215_dfs(int n, int l, int[] t, int[] k, int depth, int cntT, int cntK) {
+		if (depth == n) {
+			return cntT;
+		}
+		int max = Integer.MIN_VALUE;
+		
+		if (cntK + k[depth] <= l)
+			max = Math.max(max, func_5215_dfs(n, l, t, k, depth + 1, cntT + t[depth], cntK + k[depth]));
+		
+		max = Math.max(max, func_5215_dfs(n, l, t, k, depth + 1, cntT, cntK));
+		
+		return max;
+	}
+}
