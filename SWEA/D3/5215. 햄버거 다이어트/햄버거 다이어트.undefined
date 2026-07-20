@@ -30,6 +30,7 @@ class Solution {
 			
 			// dfs
 //			int max = func_5215_dfs(N, L, t, k, 0, 0, 0);
+//			sb.append('#').append(tc).append(' ').append(max).append('\n');
 			// dp
 			int[] dp = new int[L + 1];
 			for (int i = 0; i < N; i++) {
@@ -37,7 +38,6 @@ class Solution {
 					dp[j] = Math.max(dp[j], dp[j - k[i]] + t[i]);
 				}
 			}
-			
 			sb.append('#').append(tc).append(' ').append(dp[L]).append('\n');
 		}
 		bw.write(sb.toString());
