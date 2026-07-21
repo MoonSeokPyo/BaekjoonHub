@@ -1,0 +1,93 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+	public static void main(String[] args) throws Exception {
+		func_7793();
+		
+		br.close();
+		bw.close();
+	}
+	
+	// 오! 나의 여신님
+	static void func_7793() throws Exception {
+        StringBuilder sb = new StringBuilder();
+        int[] dy = {-1, 1, 0, 0};
+        int[] dx = {0, 0, -1, 1};
+        int T = Integer.parseInt(br.readLine());
+        for (int tc = 1; tc <= T; tc++) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int N = Integer.parseInt(st.nextToken());
+            int M = Integer.parseInt(st.nextToken());
+            char[][] map = new char[N][M];
+            
+            Queue<int[]> dq = new ArrayDeque<>();
+            boolean[][] dv = new boolean[N][M];
+            Queue<int[]> hq = new ArrayDeque<>();
+            boolean[][] hv = new boolean[N][M];
+            
+            // 수연이의 위치는 ‘S’, 여신의 공간은 ‘D’, 돌의 위치는 ‘X’, 악마는 ‘*’
+            for (int i = 0; i < N; i++) {
+                String input = br.readLine();
+                for (int j = 0; j < M; j++) {
+                    map[i][j] = input.charAt(j);
+                    if (map[i][j] == '*') {
+                    	dq.add(new int[] {i, j});
+                    	dv[i][j] = true;
+                    } else if (map[i][j] == 'S') {
+                    	hq.add(new int[] {i, j});
+                    	hv[i][j] = true;
+                    }
+                }
+            }
+            
+            int time;
+            boolean goal = false;
+            for (time = 1; time <= 2500; time++) {
+				int size = dq.size();
+				for (int i = 0; i < size; i++) {
+					int[] cur = dq.poll();
+					int y = cur[0];
+					int x = cur[1];
+					for (int d = 0; d < 4; d++) {
+						int ny = y + dy[d];
+						int nx = x + dx[d];
+						if (0 <= ny && ny < N && 0 <= nx && nx < M && !dv[ny][nx] && map[ny][nx] == '.') {
+							dv[ny][nx] = true;
+							dq.add(new int[] {ny, nx});
+						}
+					}
+				}
+				
+				size = hq.size();
+				if (size == 0)
+					break;
+				for (int i = 0; i < size; i++) {
+					int[] cur = hq.poll();
+					int y = cur[0];
+					int x = cur[1];
+					for (int d = 0; d < 4; d++) {
+						int ny = y + dy[d];
+						int nx = x + dx[d];
+						if (0 <= ny && ny < N && 0 <= nx && nx < M && !hv[ny][nx] && !dv[ny][nx] && map[ny][nx] != 'X') {
+							if (map[ny][nx] == 'D')
+								goal = true;
+							hv[ny][nx] = true;
+							hq.add(new int[] {ny, nx});
+						}
+					}
+				}
+				if (goal)
+					break;
+			}
+            if (goal)
+            	sb.append('#').append(tc).append(' ').append(time).append('\n');
+            else
+            	sb.append('#').append(tc).append(' ').append("GAME OVER").append('\n');
+        }
+        bw.write(sb.toString());
+    }
+}
