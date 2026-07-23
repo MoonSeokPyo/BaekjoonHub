@@ -22,17 +22,15 @@ class Solution {
 			int K = Integer.parseInt(st.nextToken());
 			st = new StringTokenizer(br.readLine());
 			
-			TreeMap<Integer, Integer> map = new TreeMap<>();
+			int[] t = new int[N];
 			for (int i = 0; i < N; i++) {
-				int time = Integer.parseInt(st.nextToken());
-				map.put(time, map.getOrDefault(time, 0) + 1);
+				t[i] = Integer.parseInt(st.nextToken());
 			}
+			Arrays.sort(t);
 			boolean result = true;
-			int cnt = 0;
-			for (int time : map.keySet()) {
-				cnt += map.get(time);
-				int bread = (time / M) * K;
-				if (cnt > bread) {
+			for (int i = 0; i < N; i++) {
+				int bread = (t[i] / M) * K;
+				if (bread < i + 1) {
 					result = false;
 					break;
 				}
