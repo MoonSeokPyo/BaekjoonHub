@@ -1,0 +1,28 @@
+import java.util.*;
+import java.io.*;
+import java.math.BigInteger;
+
+class Solution {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+	public static void main(String[] args) throws Exception {
+		func_3260();
+		
+		br.close();
+		bw.close();
+	}
+	
+	// 두 수의 덧셈
+	static void func_3260() throws Exception {
+		StringBuilder sb = new StringBuilder();
+		int T = Integer.parseInt(br.readLine());
+		for (int tc = 1; tc <= T; tc++) {
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			BigInteger a = new BigInteger(st.nextToken());
+			BigInteger b = new BigInteger(st.nextToken());
+			sb.append('#').append(tc).append(' ').append(a.add(b)).append('\n');
+		}
+		bw.write(sb.toString());
+	}
+}
